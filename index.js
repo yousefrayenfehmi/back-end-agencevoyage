@@ -4,11 +4,12 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const userRoutes = require('./Routes/Routes');
 const connectDB = require('./Connection/connection');
+const cors = require('cors');
 
 // Connexion à la base de données
 connectDB();
-
 const app = express();
+app.use(cors());
 
 // Middleware pour analyser les données JSON
 app.use(express.json());
