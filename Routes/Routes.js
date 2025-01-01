@@ -58,10 +58,19 @@ router.get('/auth/google',
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    console.log('hhhhhhh');
-    
-    // Successful authentication, redirect home.
-    res.redirect('/');
+    res.redirect('http://localhost:4200/login');
+  });
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+  
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await User.findById(id);  // Utilisation de async/await
+      done(null, user);  // Pas d'erreur, donc premier paramètre null
+    } catch (err) {
+      done(err, null);  // En cas d'erreur, le premier paramètre est l'erreur
+    }
   });
 
 module.exports = router;

@@ -37,19 +37,3 @@ UserSchema.pre('save', async function (next) {
 // Exportation du modèle
 module.exports = mongoose.model('User', UserSchema);
 
-// Schéma pour les utilisateurs Google
-
-
-// Hashage du mot de passe avant de sauvegarder un utilisateur classique
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('mot_de_passe')) return next();
-
-  const salt = await bcrypt.genSalt(10);
-  this.mot_de_passe = await bcrypt.hash(this.mot_de_passe, salt);
-  next();
-});
-
-// Exportation des modèles
-module.exports =  mongoose.model('User', UserSchema);
- 
-
